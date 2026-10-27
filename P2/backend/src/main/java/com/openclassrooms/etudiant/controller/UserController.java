@@ -27,6 +27,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    // Am.Yo : lit le JSON, demande un JWT, le renvoie en texte
     @PostMapping("/api/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         String jwtToken = userService.login(loginRequestDTO.getLogin(), loginRequestDTO.getPassword());

@@ -16,12 +16,14 @@ public class JwtService {
     private final SecretKey signingKey;
     private final long expiration;
 
+    // Am.Yo : prépare la clé et la durée du token
     public JwtService(@Value("${jwt.secret}") String secret,
                       @Value("${jwt.expiration}") long expiration) {
         this.signingKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expiration = expiration;
     }
 
+    // Am.Yo : signe un JWT HS256, sujet = login, durée 24h
     public String generateToken(UserDetails userDetails) {
         Date now = new Date();
         return Jwts.builder()

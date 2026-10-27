@@ -32,6 +32,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // Am.Yo : cherche l'user, compare le hash, renvoie un JWT
     public String login(String login, String password) {
         Assert.notNull(login, "Login must not be null");
         Assert.notNull(password, "Password must not be null");

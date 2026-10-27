@@ -11,6 +11,7 @@ spring:
     password: ${DB_PASSWORD}
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
 
+# Am.Yo : clé et durée du JWT, lues dans .env
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION}
