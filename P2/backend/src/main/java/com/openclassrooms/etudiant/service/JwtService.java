@@ -1,5 +1,6 @@
 package com.openclassrooms.etudiant.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,27 @@ public class JwtService {
                 .expiration(new Date(now.getTime() + expiration))
                 .signWith(signingKey)
                 .compact();
+    }
+
+    // Am.Yo : lit le login contenu dans le token
+    public String extractUsername(String token) {
+        return parseClaims(token).getSubject();
+    }
+
+    // Am.Yo : le token correspond à cet utilisateur et n'est pas expiré
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        Claims claims = parseClaims(token);
+        return userDetails.getUsername().equals(claims.getSubject())
+                && claims.getExpiration().after(new Date());
+    }
+
+    // Am.Yo : décode et vérifie la signature du token
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(signingKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
 }

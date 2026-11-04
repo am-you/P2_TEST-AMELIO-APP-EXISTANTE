@@ -4,8 +4,10 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MaterialModule } from '../../shared/material.module';
 import { UserService } from '../../core/service/user.service';
+import { TokenService } from '../../core/service/token.service';
 import { Login } from '../../core/models/Login';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +18,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class LoginComponent implements OnInit {
   private userService = inject(UserService);
+  private tokenService = inject(TokenService);
+  private router = inject(Router);
   private formBuilder = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
   loginForm: FormGroup = new FormGroup({});
@@ -53,8 +57,11 @@ export class LoginComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (token) => {
+          // Am.Yo : garde le JWT puis ouvre la liste des étudiants
           this.loading = false;
           this.token = token;
+          this.tokenService.save(token);
+          this.router.navigate(['/students']);
         },
         error: (error: HttpErrorResponse) => {
           this.loading = false;

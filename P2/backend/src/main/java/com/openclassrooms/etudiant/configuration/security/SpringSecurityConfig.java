@@ -2,6 +2,7 @@ package com.openclassrooms.etudiant.configuration.security;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +23,9 @@ public class SpringSecurityConfig {
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -51,15 +56,24 @@ public class SpringSecurityConfig {
                         // No auth needed on :
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/register", "/api/login").permitAll()
-                        // Others protected routes will be added here.
+                        // Am.Yo : le reste, dont /api/students, exige un JWT
                         .anyRequest().authenticated()
                 )
-                // .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // Am.Yo : vérifie le Bearer avant le reste de la sécurité
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(
                         (request, response, exception) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
                         }));
         return http.build();
+    }
+
+    // Am.Yo : le filtre JWT ne tourne que dans la chaîne Spring Security
+    @Bean
+    public FilterRegistrationBean<JwtAuthenticationFilter> jwtAuthenticationFilterRegistration(JwtAuthenticationFilter filter) {
+        FilterRegistrationBean<JwtAuthenticationFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
 
 }

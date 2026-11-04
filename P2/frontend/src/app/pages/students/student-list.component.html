@@ -1,0 +1,30 @@
+<div class="card m-3">
+  <h5 class="card-header">Students</h5>
+  <div class="card-body">
+    <!-- Am.Yo : actions de la liste -->
+    <div class="mb-3">
+      <a class="btn btn-primary mr-1" routerLink="/students/new">Add student</a>
+      <button class="btn btn-secondary" type="button" (click)="onLogout()">Log out</button>
+    </div>
+
+    @if (loading) {
+      <div class="alert alert-info">Loading...</div>
+    }
+    @if (errorMessage) {
+      <div class="alert alert-danger">{{ errorMessage }}</div>
+    }
+    @if (!loading && students.length === 0) {
+      <div class="alert alert-secondary">No student yet.</div>
+    }
+
+    <!-- Am.Yo : une ligne par étudiant, détail, modifier, supprimer -->
+    @for (student of students; track student.id) {
+      <div class="border rounded p-2 mb-2">
+        <div>{{ student.firstName }} {{ student.lastName }} — {{ student.email }}</div>
+        <a class="btn btn-link" [routerLink]="['/students', student.id]">Details</a>
+        <a class="btn btn-link" [routerLink]="['/students', student.id, 'edit']">Edit</a>
+        <button class="btn btn-link text-danger" type="button" (click)="onDelete(student)">Delete</button>
+      </div>
+    }
+  </div>
+</div>

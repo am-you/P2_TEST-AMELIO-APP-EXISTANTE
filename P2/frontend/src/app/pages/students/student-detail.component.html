@@ -1,0 +1,20 @@
+<div class="card m-3">
+  <h5 class="card-header">Student details</h5>
+  <div class="card-body">
+    @if (loading) {
+      <div class="alert alert-info">Loading...</div>
+    }
+    @if (errorMessage) {
+      <div class="alert alert-danger">{{ errorMessage }}</div>
+    }
+    <!-- Am.Yo : champs de l'étudiant -->
+    @if (student) {
+      <p>First name: {{ student.firstName }}</p>
+      <p>Last name: {{ student.lastName }}</p>
+      <p>Email: {{ student.email }}</p>
+      <a class="btn btn-primary mr-1" [routerLink]="['/students', student.id, 'edit']">Edit</a>
+      <button class="btn btn-danger mr-1" type="button" (click)="onDelete()">Delete</button>
+    }
+    <a class="btn btn-secondary" routerLink="/students">Back</a>
+  </div>
+</div>
