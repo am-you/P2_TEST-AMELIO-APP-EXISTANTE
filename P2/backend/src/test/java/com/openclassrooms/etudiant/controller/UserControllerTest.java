@@ -35,7 +35,8 @@ public class UserControllerTest {
 
 
     @Container
-    static MySQLContainer mySQLContainer = new MySQLContainer("mysql:latest");
+    // Am.Yo : MySQL 8.0, mysql:latest refuse innodb_log_file_size
+    static MySQLContainer mySQLContainer = new MySQLContainer("mysql:8.0");
 
     @Autowired
     private UserService userService;
