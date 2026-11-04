@@ -28,6 +28,10 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Am.Yo : captures Cypress, pas le code des tests
+/cypress/screenshots
+/cypress/videos
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/

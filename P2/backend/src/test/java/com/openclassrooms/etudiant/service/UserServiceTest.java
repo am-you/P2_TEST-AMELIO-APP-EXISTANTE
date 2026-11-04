@@ -28,6 +28,8 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private JwtService jwtService;
     @InjectMocks
     private UserService userService;
 
@@ -74,5 +76,45 @@ public class UserServiceTest {
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
         assertThat(userCaptor.getValue()).isEqualTo(user);
+    }
+
+    // Am.Yo : bon login et bon mot de passe renvoient le JWT
+    @Test
+    public void test_login_returns_jwt() {
+        User user = new User();
+        user.setLogin(LOGIN);
+        user.setPassword(PASSWORD);
+        when(userRepository.findByLogin(LOGIN)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(PASSWORD, PASSWORD)).thenReturn(true);
+        when(jwtService.generateToken(user)).thenReturn("jwt-token");
+
+        String token = userService.login(LOGIN, PASSWORD);
+
+        assertThat(token).isEqualTo("jwt-token");
+    }
+
+    // Am.Yo : login inconnu ou mauvais mot de passe
+    @Test
+    public void test_login_rejects_unknown_user_or_bad_password() {
+        when(userRepository.findByLogin(LOGIN)).thenReturn(Optional.empty());
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> userService.login(LOGIN, PASSWORD));
+
+        User user = new User();
+        user.setLogin(LOGIN);
+        user.setPassword(PASSWORD);
+        when(userRepository.findByLogin(LOGIN)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("wrong", PASSWORD)).thenReturn(false);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> userService.login(LOGIN, "wrong"));
+    }
+
+    // Am.Yo : login ou mot de passe null
+    @Test
+    public void test_login_null_throws_IllegalArgumentException() {
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> userService.login(null, PASSWORD));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> userService.login(LOGIN, null));
     }
 }

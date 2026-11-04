@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudentDtoMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">etudiant-backend</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.etudiant.mapper</a> &gt; <span class="el_source">StudentDtoMapperImpl.java</span></div><h1>StudentDtoMapperImpl.java</h1><pre class="source lang-java linenums">package com.openclassrooms.etudiant.mapper;
+
+import com.openclassrooms.etudiant.dto.StudentRequestDTO;
+import com.openclassrooms.etudiant.dto.StudentResponseDTO;
+import com.openclassrooms.etudiant.entities.Student;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2026-11-04T14:28:47+0100&quot;,
+    comments = &quot;version: 1.6.3, compiler: javac, environment: Java 21.0.12.1 (Ubuntu)&quot;
+)
+@Component
+<span class="fc" id="L15">public class StudentDtoMapperImpl implements StudentDtoMapper {</span>
+
+    @Override
+    public Student toEntity(StudentRequestDTO dto) {
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if ( dto == null ) {</span>
+<span class="nc" id="L20">            return null;</span>
+        }
+
+<span class="fc" id="L23">        Student student = new Student();</span>
+
+<span class="fc" id="L25">        student.setFirstName( dto.getFirstName() );</span>
+<span class="fc" id="L26">        student.setLastName( dto.getLastName() );</span>
+<span class="fc" id="L27">        student.setEmail( dto.getEmail() );</span>
+
+<span class="fc" id="L29">        return student;</span>
+    }
+
+    @Override
+    public StudentResponseDTO toDto(Student student) {
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if ( student == null ) {</span>
+<span class="nc" id="L35">            return null;</span>
+        }
+
+<span class="fc" id="L38">        StudentResponseDTO studentResponseDTO = new StudentResponseDTO();</span>
+
+<span class="fc" id="L40">        studentResponseDTO.setId( student.getId() );</span>
+<span class="fc" id="L41">        studentResponseDTO.setFirstName( student.getFirstName() );</span>
+<span class="fc" id="L42">        studentResponseDTO.setLastName( student.getLastName() );</span>
+<span class="fc" id="L43">        studentResponseDTO.setEmail( student.getEmail() );</span>
+<span class="fc" id="L44">        studentResponseDTO.setCreated_at( student.getCreated_at() );</span>
+<span class="fc" id="L45">        studentResponseDTO.setUpdated_at( student.getUpdated_at() );</span>
+
+<span class="fc" id="L47">        return studentResponseDTO;</span>
+    }
+
+    @Override
+    public void updateEntity(StudentRequestDTO dto, Student student) {
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if ( dto == null ) {</span>
+<span class="nc" id="L53">            return;</span>
+        }
+
+<span class="fc" id="L56">        student.setFirstName( dto.getFirstName() );</span>
+<span class="fc" id="L57">        student.setLastName( dto.getLastName() );</span>
+<span class="fc" id="L58">        student.setEmail( dto.getEmail() );</span>
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
